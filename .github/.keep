@@ -1,0 +1,97 @@
+
+package jogodedamas;
+
+import java.util.Scanner;
+
+/**
+ *
+ * @author Átylla
+ */
+public class JogoDeDamas {
+    
+    //função para inicializar a matriz do tabuleiro
+    public static void iniciarTab(String tabuleiro[][], String caractereM, String caractereJ){
+        
+        //for aninhados para inicializar a matriz do tabuleiro
+        for(int x=0; x<8; x++){  
+            if(x<3){
+                //for para preencher o lado do jogador-máquina
+                for(int y=0; y<8; y++){
+                    if((y%2)==(x%2)){
+                        tabuleiro[x][y] = "| " + caractereM + " ";
+                    }else{
+                        tabuleiro[x][y] = "|   ";
+                    }
+                }
+            }else{
+                if(x>4){
+                    //for para preencher o lado do jogador em disputa
+                    for(int y=0; y<8; y++){
+                        if((y%2)==(x%2)){
+                            tabuleiro[x][y] = "| " + caractereJ + " ";
+                        }else{
+                            tabuleiro[x][y] = "|   ";
+                        }
+                    }
+                }else{
+                    //espaço intermediário de disposição incial do jogo 
+                    for(int y=0; y<8; y++){
+                        tabuleiro[x][y] = "|   ";
+                    }
+                }
+                }
+   
+        }
+    }
+    //função para exibir o tabuleiro
+    public static void exibeTab(String tabuleiro[][]){
+        
+        System.out.println("tabuleiro:\n\n");
+        for(int i=0; i<8; i++){
+            System.out.print("\n\t");
+            for(int linha=0; linha<32; linha++)
+                System.out.print("-");
+            System.out.print("\n\t");
+            for(int j=0; j<8; j++){
+                System.out.print(tabuleiro[i][j]);
+            }
+            
+        }
+    }
+    
+    public static void main(String[] args) {
+        
+        //declarando as variáveis para implementar o tabuleiro do jogo
+        int controle;
+        String cM, cJ;
+        
+        //declarando a matriz para implementar o tabuleiro do jogo
+        String [][] tab = new String[32][32];
+        
+        //Instância do objeto Scanner, para receber os dados de entrada
+        Scanner entrada = new Scanner(System.in);
+        
+        do{
+            
+            System.out.println("\n\nEscolha um dos caracteres para definir as peças do tabuleiro:");
+            System.out.println("@ - # - $ - % - & - *");
+            
+            System.out.println("Digite o caractere do adversário:");
+            cM = entrada.next();
+            System.out.println("Digite o seu caractere:");
+            cJ = entrada.next();
+            
+            iniciarTab(tab, cM, cJ);
+            
+            exibeTab(tab);
+            
+            System.out.print("\n\nDeseja continuar: \n0 - sair\n1 - continuar\n\n");
+            controle = entrada.nextInt();
+            
+        }while(controle!=0);
+        
+        System.out.print("\t***Jogo de Damas***\n\n");
+        System.out.println("\n\n");
+    }
+    
+}
