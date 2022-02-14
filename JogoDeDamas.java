@@ -1,5 +1,5 @@
 //esta classe é par ao jogo em si, onde todos os objetos fazem parte contituinte :)
-class JogoDeDamas {
+public class JogoDeDamas {
     
     private Jogador jogador;
     private Jogador maquina;
