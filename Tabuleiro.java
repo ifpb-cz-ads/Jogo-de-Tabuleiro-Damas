@@ -1,7 +1,5 @@
 
-//classe para criar o objeto fundamental do jogo - o tabuleiro
-public class Tabuleiro{
-    private String [][] matriz;
+private String [][] matriz;
     private String pecaM, pecaJ;
     private final String vazio;
         
