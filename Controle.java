@@ -3,11 +3,14 @@ import java.util.Scanner;
 //classe para responsável por todo o controle do jogo (movimentos, escolhas, navegado nas opções)
 public class Controle{
     
-    String sentinela, coluna, linha;
-    Scanner entrada;
+    private String sentinela, coluna, linha;
+    private Scanner entrada;
     
     Controle(){
-        
+        this.sentinela = "";
+        this.coluna = "";
+        this.linha = "";
+        this.entrada = new Scanner(System.in);
     }
     
     Controle(String sentinela, String coluna, String linha){
@@ -16,8 +19,12 @@ public class Controle{
         this.linha = linha;
         this.entrada = new Scanner(System.in);
     }
+
+    public String input(){
+		return this.entrada.next();
+    }
     
-    public  void configurar(Tabuleiro tab){
+    public void configurar(Tabuleiro tab){
         
         System.out.println("\n\tCONFIGURAÇÃO DE TABULEIRO");
         System.out.println("\n\nDefina as peças do tabuleiro:");
@@ -45,7 +52,7 @@ public class Controle{
         
     }
     //método para iniciar uma partida
-    public void jogar(Tabuleiro tab, Jogador jogador, Jogador maquina){
+    public void jogar(Tabuleiro tab, Jogador jogador, Maquina maquina){
         
         System.out.println("\n\t\t\t\t****INICIO DE PARTIDA****\n");
         System.out.print("\t\t\t\t*********TABULEIRO**********\n");
