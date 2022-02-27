@@ -2,7 +2,7 @@
 public class JogoDeDamas {
     
     private Jogador jogador;
-    private Jogador maquina;
+    private Maquina maquina;
     private Tabuleiro tab;
     private Controle controle;
     private String opcao;
@@ -11,12 +11,12 @@ public class JogoDeDamas {
         
     }
     
-    JogoDeDamas(String jogador, String maquina){
+    JogoDeDamas(String jogador){
         this.jogador = new Jogador(jogador,18,0,8);
-        this.maquina = new Jogador(maquina,18,0,8);
         this.tab = new Tabuleiro("@", "#", " ");
-        this.controle = new Controle(null, null, null);
-        this.opcao = null;
+        this.maquina = new Maquina();
+	    this.controle = new Controle();
+        this.opcao = "";
     }
     
     public void menu(){
@@ -26,7 +26,7 @@ public class JogoDeDamas {
 
             System.out.print("MENU\n1 - jogar\n2 - configurar tabuleiro\n3 - mostrar tabuleiro");
             System.out.print("\n4 - comandos e regras\n0 - sair\n\nOpção: ");
-            opcao = controle.entrada.next();
+            opcao = controle.input();
             
             switch(opcao){
                 case "1":
@@ -57,7 +57,7 @@ public class JogoDeDamas {
     
     public static void main(String[] args) {
         
-        new JogoDeDamas("jogador", "maquina").menu();
+        new JogoDeDamas("jogador").menu();
         
     }
 }
