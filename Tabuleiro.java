@@ -1,5 +1,7 @@
 
-private String [][] matriz;
+//classe para criar o objeto fundamental do jogo - o tabuleiro
+public class Tabuleiro{
+    private String [][] matriz;
     private String pecaM, pecaJ;
     private final String vazio;
         
@@ -47,26 +49,24 @@ private String [][] matriz;
     //função para inicializar a matriz do tabuleiro
     public void iniciarTab(){
          
-        //margem do tabuleiro
-        for(int x=0; x<this.matriz[0].length; x++){
-            for(int y=0; y<this.matriz[0].length; y++){
-                    this.matriz[x][y] = "*";
-            }
-        }
-        //for aninhados para inicializar a matriz do tabuleiro
-        for(int x=2; x<this.matriz[0].length-2; x++){
-            for(int y=2; y<this.matriz[0].length-2; y++){
-                //condição para preencher o lado do jogador-máquina
-                if((x<=4) && (y%2==x%2)){
-                    this.matriz[x][y] = this.pecaM;
-                //condição para preencher o lado do jogador disputante
-                }else if((x>=7) && (y%2==x%2)){
-                    this.matriz[x][y] = this.pecaJ;
-                }else{
-                    //espaço intermediário de disposição incial do jogo 
-                    this.matriz[x][y] = this.vazio;
-                }
+        for(int x=0; x<matriz.length; x++){
+            for(int y=0; y<matriz[x].length; y++){
                 
+                //condição para preencher as bordas delimitadoras do tabuleiro
+                if(x<=1 || x>=10 || y<=1 || y>=10){
+                    matriz[x][y] = "*";
+                }else{
+                    //condição para preencher o restante com espaço vazio
+                    matriz[x][y] = " ";
+                }
+                //condição para preencher o lado do jogador-máquina
+                if((x<5) && (y%2==x%2)){
+                    this.matriz[x][y] = this.pecaM;
+                }
+                //condição para preencher o lado do jogador disputante
+                if((x>6) && (y%2==x%2)){
+                    this.matriz[x][y] = this.pecaJ;
+                }
             }
         }
     }
