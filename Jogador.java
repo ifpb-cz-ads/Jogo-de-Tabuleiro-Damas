@@ -1,7 +1,6 @@
 import java.util.Scanner;
-
 //classe modelo para criar os objetos jogador e máquina (os elementos da interação do jogo)
-public class Jogador{
+class Jogador{
     private String nome;
     private int idade;
     protected int jogadas;
@@ -58,52 +57,76 @@ public class Jogador{
         return this.numPecas;
     }
     
-     //função para movimento das peças do jogador
-    public boolean mover(Tabuleiro tab, int x, int y){
+    
+    public boolean paraEsquerda(Tabuleiro tab, int [] posicao){
+        int x = posicao[0];
+        int y = posicao[1];
         
-        //teste para saber se na posição selecionada encontra-se a peça do jogador 
-        if( x<=2 || x>9 || tab.matchMatriz(x,y,tab.getVazio())|| tab.matchMatriz(x,y,tab.getPecaM()) ){
-            
+        if(y <= 2 || tab.matchMatriz(x-1, y-1,tab.getPecaM()) && tab.matchMatriz(x-2, y-2,tab.getPecaM()) ){
             return false;
-        }else{
-            System.out.print("\t\tPeça selecionada!\n1 - Esquerda\n2 - Direita\nMovimento:");
-            Scanner entrada = new Scanner(System.in);
-            String mov = entrada.next();
-            //teste de seleção de movimento do jogador
-            switch(mov){
-                //seleção para esquerda
-                case "1":
-                    if(y <= 2 || tab.matchMatriz(x-1, y-1,tab.getPecaM()) && tab.matchMatriz(x-2, y-2,tab.getPecaM())){
-                        return false;
-                    }else if( tab.matchMatriz(x-1, y-1,tab.getVazio() )){
-                        tab.setMatriz(x-1,y-1,tab.getPecaJ());
-                        tab.setMatriz(x,y,tab.getVazio());
-                    }else if( tab.matchMatriz(x-2, y-2,tab.getVazio() )){
-                        tab.setMatriz(x-2,y-2,tab.getPecaJ());
-                        tab.setMatriz(x-1,y-1,tab.getVazio());
-                        tab.setMatriz(x,y,tab.getVazio());
-                    }
-                    break;
-                //seleção para direita
-                case "2":
-                    if(y >= 9 || tab.matchMatriz(x-1, y+1,tab.getPecaM()) && tab.matchMatriz(x-2, y+2,tab.getPecaM()) ){
-                        return false;
-                    }else if(tab.matchMatriz(x-1, y+1,tab.getVazio())){
-                        tab.setMatriz(x-1,y+1,tab.getPecaJ());
-                        tab.setMatriz(x,y,tab.getVazio());
-                    }else if( tab.matchMatriz(x-2, y+2,tab.getVazio()) ){
-                        tab.setMatriz(x-2,y+2,tab.getPecaJ());
-                        tab.setMatriz(x-1,y+1,tab.getVazio());
-                        tab.setMatriz(x,y,tab.getVazio());
-                    }
-                    break;
-                default:
-                    return false;
-            }
+        }else if( tab.matchMatriz(x-1, y-1,tab.getVazio() )){
+            tab.setMatriz(x-1,y-1,tab.getPecaJ());
+            tab.setMatriz(x,y,tab.getVazio());
+        }else if( tab.matchMatriz(x-2, y-2,tab.getVazio() )){
+            tab.setMatriz(x-2,y-2,tab.getPecaJ());
+            tab.setMatriz(x-1,y-1,tab.getVazio());
+            tab.setMatriz(x,y,tab.getVazio());
         }
-        
-        //função ocorreu normalmente...
         return true;
     }
     
+    public boolean paraDireita(Tabuleiro tab, int [] posicao){
+        int x = posicao[0];
+        int y = posicao[1];
+        
+        if(y >= 9 || tab.matchMatriz(x-1, y+1,tab.getPecaM()) && tab.matchMatriz(x-2, y+2,tab.getPecaM()) ){
+            return false;
+        }else if(tab.matchMatriz(x-1, y+1,tab.getVazio())){
+            tab.setMatriz(x-1,y+1,tab.getPecaJ());
+            tab.setMatriz(x,y,tab.getVazio());
+        }else if( tab.matchMatriz(x-2, y+2,tab.getVazio()) ){
+            tab.setMatriz(x-2,y+2,tab.getPecaJ());
+            tab.setMatriz(x-1,y+1,tab.getVazio());
+            tab.setMatriz(x,y,tab.getVazio());
+        }
+        return true;
+    }
+    
+    
+     //função para movimento das peças do jogador
+    public void mover(Tabuleiro tab, int [] posicao){
+        
+        Scanner entrada = new Scanner(System.in);
+        boolean fluxo = true;
+        
+        do{
+            System.out.print("\n1 - Esquerda\n2 - Direita\nMovimento:");
+        
+            //teste de seleção de movimento do jogador
+            switch(entrada.next()){
+                //seleção para esquerda
+                case "1":
+                    if(paraEsquerda(tab, posicao)){
+                        fluxo = false;
+                        break;
+                    }else{
+                        System.out.println("Movimento inválido!\nTente outro...");
+                        break;
+                    }
+                //seleção para direita
+                case "2":
+                    if(paraDireita(tab, posicao)){
+                        fluxo = false;
+                        break;
+                    }else{
+                        System.out.println("Movimento inválido!\nTente outro...");
+                        break;
+                    }
+                default:
+                    System.out.println("Movimento inválido!\nTente outro...");
+                    break;
+            }
+        }while(fluxo);
+    }
+
 }
