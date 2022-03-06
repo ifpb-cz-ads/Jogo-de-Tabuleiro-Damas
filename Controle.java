@@ -51,24 +51,50 @@ public class Controle{
         }
         
     }
+    
+    public boolean validarPeca(Tabuleiro tab, int [] posicao){
+        int x = posicao[0];
+        int y = posicao[1];
+        
+        if(x<=2 || x>9 || tab.matchMatriz(x,y,tab.getVazio())|| tab.matchMatriz(x,y,tab.getPecaM()) ){
+            return false;
+        }else if( tab.matchMatriz(x-1, y-1,tab.getPecaJ()) && tab.matchMatriz(x-1, y+1,tab.getPecaJ()) ){
+            return false;
+        }else if( (!tab.matchMatriz(x-1, y-1,tab.getVazio()) ) && (!tab.matchMatriz(x-1, y+1,tab.getVazio()) ) && (!tab.matchMatriz(x-1, y-2,tab.getVazio()) ) && (!tab.matchMatriz(x-1, y+2,tab.getVazio()) ) ){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    
+    public int[] selecionarPeca(){
+        System.out.println("\nPosição da peça:");
+        System.out.print("Linha: ");
+        linha = entrada.next();
+        
+        System.out.print("Coluna: ");
+        coluna = entrada.next();
+        
+        int x = Integer.parseInt(linha)+1;
+        int y = Integer.parseInt(coluna)+1;
+        
+        return new int []{x, y};
+    }
+    
     //método para iniciar uma partida
     public void jogar(Tabuleiro tab, Jogador jogador, Maquina maquina){
         
         System.out.println("\n\t\t\t\t****INICIO DE PARTIDA****\n");
-        System.out.print("\t\t\t\t*********TABULEIRO**********\n");
-        tab.exibirTab();
         
         do{
-            
-            System.out.println("\nPosição da peça:");
-            System.out.print("Linha: ");
-            linha = entrada.next();
-            
-            System.out.print("Coluna: ");
-            coluna = entrada.next();
-            
-            //teste de ocorrência do movimento - valido ou não
-            if(jogador.mover(tab, Integer.parseInt(linha)+1, Integer.parseInt(coluna)+1)){
+            System.out.print("\t\t\t\t*********TABULEIRO**********\n");
+            tab.exibirTab();
+            int [] posicao = selecionarPeca();
+	        
+            //teste para saber se na posição selecionada encontra-se a peça do jogador 
+            if( validarPeca(tab, posicao)){
+                System.out.print("\t\tPeça selecionada!");
+                jogador.mover(tab, posicao);
                 
                 System.out.print("\nSua jogada:");
                 tab.exibirTab();
@@ -76,12 +102,12 @@ public class Controle{
                 maquina.mover(tab);
                 System.out.print("\nJogada do adversário:");
                 tab.exibirTab();
-                
+               
             }else{
+            
                 System.out.println("\n\n\tMovimento inválido!");
-                System.out.println("Suas peças são: "+ tab.getPecaJ());
                 System.out.print("\nTente novamente...\n");
-                tab.exibirTab();
+                
             }
             
         System.out.print("\n1 - 'mover'\n0 - 'encerrar partida'\nOpção: ");
