@@ -1,27 +1,29 @@
+package com.company;
 
 //classe para criar o objeto fundamental do jogo - o tabuleiro
-public class Tabuleiro{
-    private String [][] matriz;
+class Tabuleiro{
+    private final String [][] matriz;
     private String pecaM, pecaJ;
     private final String vazio;
-        
-    Tabuleiro(String j, String m, String vazio){
+
+    Tabuleiro(){
         this.matriz = new String[12][12];
-        this.vazio = vazio;
-        this.pecaJ = j;
-        this.pecaM = m;
+        this.vazio = " ";
+        this.pecaJ = "#";
+        this.pecaM = "@";
         iniciarTab();
     }
+
     //métodos acessadores das peças
     public String getPecaJ(){
         return this.pecaJ;
     }
-    
+
     //métodos acessadores das peças
     public String getVazio(){
         return this.vazio;
     }
-    
+
     public String getPecaM(){
         return this.pecaM;
     }
@@ -29,7 +31,7 @@ public class Tabuleiro{
     public void setPecaJ(String pecaJ){
         this.pecaJ = pecaJ;
     }
-    
+
     public void setPecaM(String pecaM){
         this.pecaM = pecaM;
     }
@@ -41,17 +43,17 @@ public class Tabuleiro{
     public void setMatriz(int posX, int posY, String peca){
         this.matriz[posX][posY] = peca;
     }
-    
+
     public boolean matchMatriz(int posX, int posY, String peca){
         return matriz[posX][posY].equals(peca);
     }
-    
+
     //função para inicializar a matriz do tabuleiro
     public void iniciarTab(){
-         
+
         for(int x=0; x<matriz.length; x++){
             for(int y=0; y<matriz[x].length; y++){
-                
+
                 //condição para preencher as bordas delimitadoras do tabuleiro
                 if(x<=1 || x>=10 || y<=1 || y>=10){
                     matriz[x][y] = "*";
@@ -70,14 +72,14 @@ public class Tabuleiro{
             }
         }
     }
-    
+
     //função para exibir o tabuleiro
     public void exibirTab(){
-        
+
         //exibir as colunas
         System.out.print("\n\t\t    ");
         for(int c = 1; c <=8; c++){
-                System.out.print(c+"     ");
+            System.out.print(c+"     ");
         }
         for(int i=2; i<this.matriz[0].length-2; i++){
             System.out.print("\n\t\t--------------------------------------------------");
@@ -86,8 +88,8 @@ public class Tabuleiro{
             for(int j=2; j<this.matriz[0].length-2; j++){
                 System.out.print("|  "+ this.matriz[i][j] +"  ");
             }
-            
+
         }
     }
-    
+
 }
