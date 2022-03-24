@@ -2,47 +2,75 @@ import java.awt.*;
 import java.util.ArrayList;
 
 //classe controle do jogo
-public class Controle{
+public class Controle extends Thread{
+    Tabuleiro tab;
     protected int cliques;
-    protected boolean selecao;
+    protected boolean vez;
     protected ArrayList<Point> pontos;
 
     Controle(){
-        this.selecao = false;
+        this.vez =true;
         this.cliques = 0;
-        this.pontos = new ArrayList<>(0);
+        this.pontos = new ArrayList<>(2);
     }
 
-    public void configurar(){
-
+    public void run(long x){
+        try {
+            sleep(x * 1000);
+        }catch (Exception e){
+            System.out.println();
+        }
     }
 
-    public boolean validarMovimento(){
+    public boolean selecionarPedra(Point ponto){
+        Object obj = buscarNaTab(ponto);
+        return obj!=null;
+    }
 
-        return !compararPosicoes(pontos.get(0), pontos.get(1));
+    public Object buscarNaTab(Point ponto){
+        for(Pedra i: tab.getPecas()){
+            if(compararPosicoes(i.getPosicao(), ponto)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    public void atualizarTab(){
+        for(Pedra i: tab.getPecas()){
+            i.setLabel();
+            i.setStatus(false);
+        }
+    }
+
+    public Point pontoEmPixel(Point ponto){
+
+        int limiteX=0, limiteY=0;
+        Point p = new Point();
+        for(int i=0; i<8; i++){
+            for(int j=0; j<8; j++){
+                if((ponto.y >= limiteY) && (ponto.y < limiteY + 80) && (ponto.x >= limiteX) && (ponto.x < limiteX + 50)) {
+                    p.x = limiteX;
+                    p.y = limiteY;
+                    i=j=8;
+                }
+                limiteX += 50;
+            }
+            limiteX = 0;
+            limiteY += 50;
+        }
+        return p;
+    }
+
+    public boolean espacoVazio(Point p){
+        return !selecionarPedra(p);
     }
 
     public boolean compararPosicoes(Point p1, Point p2){
         return (p1.x == p2.x && p1.y == p2.y);
     }
 
-    //método para iniciar uma partida
-    public void jogar(){
-    }
-
-    public  void comandosRegras(){
-
-        System.out.print("\n\n\t\t****COMANDOS****\n");
-        System.out.print("**seguindo as coordenadas do tabuleiro, deve-se escolher a posição da peça**\n");
-        System.out.print("**escolhe-se o número da linha, depois o da coluna - dispostos de 1 a 8, linhas e colunas, respectivamente**\n");
-        System.out.print("**após peça selecionada, deve-se escolher para qual lado movê-la**\n");
-        System.out.print("**tecla 1 - escolher movimento à esquerda**\n**tecla 2 - escolher movimento à direita**\n");
-        System.out.print("\n\t\t****REGRAS****\n**só é permitido um unico movimento por vez, em direção à base adversária**\n");
-        System.out.print("**seguindo a disposição inicial das peças, move-se para esquerda ou direita, em direção diagonal**\n");
-        System.out.print("**ao chegar na última linha, a peça torna-se Dama, passa a ter mais libertade de movimentos**\n");
-        System.out.print("**próposito do jogo é capturar todas as peças do adversário**\n\n");
-
-    }
-
 }
+
+
 

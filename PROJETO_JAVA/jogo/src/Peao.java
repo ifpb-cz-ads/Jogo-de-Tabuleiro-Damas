@@ -6,9 +6,11 @@ public class Peao extends Pedra {
     }
 
     @Override
-    public void mover() {
+    public void mover(Point p) {
         if(status){
             System.out.println("Movendo peao...");
+            setPosicao(p);
+            setStatus(false);
         }
     }
 }

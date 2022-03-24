@@ -1,13 +1,17 @@
 import java.awt.*;
 
-public class Dama extends Pedra{
+public class Dama extends Pedra {
 
     Dama(Point p, String img) {
         super(p, img);
     }
 
     @Override
-    public void mover() {
-        System.out.println("Movimentando dama...");
+    public void mover(Point p) {
+        if (status) {
+            System.out.println("Movendo dama...");
+            setPosicao(p);
+            setStatus(false);
+        }
     }
 }

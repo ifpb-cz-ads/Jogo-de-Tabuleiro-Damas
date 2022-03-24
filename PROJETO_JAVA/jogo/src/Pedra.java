@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseListener;
 
 public abstract class Pedra extends JLabel{
     protected Point posicao;
@@ -21,33 +20,8 @@ public abstract class Pedra extends JLabel{
     }
 
 
-    public boolean isStatus() {
-        return status;
-    }
-
-
     public void setStatus(boolean status) {
         this.status = status;
-    }
-
-    public String getHash() {
-        return hash;
-    }
-
-    public ImageIcon getImagem() {
-        return imagem;
-    }
-
-    public void setImagem(ImageIcon imagem) {
-        this.imagem = imagem;
-    }
-
-    public int getTAM() {
-        return TAM;
-    }
-
-    public void setTAM(int TAM) {
-        this.TAM = TAM;
     }
 
     public JLabel getLabel() {
@@ -58,14 +32,13 @@ public abstract class Pedra extends JLabel{
         this.labelPedra.setBounds(posicao.x, posicao.y, this.TAM, this.TAM);
     }
 
-    public abstract void mover();
+    public abstract void mover(Point p);
 
     public Point getPosicao() {
         return posicao;
     }
 
     public void setPosicao(Point posicao) {
-
         this.posicao.x = posicao.x;
         this.posicao.y = posicao.y;
     }
