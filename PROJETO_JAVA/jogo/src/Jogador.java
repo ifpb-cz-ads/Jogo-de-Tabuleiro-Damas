@@ -69,10 +69,13 @@ public class Jogador extends Controle {
             obj.mover(pontos.get(1));
             return true;
         }else if(movimentoTipo2()){
+
             obj = (Pedra) buscarNaTab(pontos.get(0));
             obj.mover(pontos.get(1));
             obj = (Pedra) buscarNaTab(pontos.get(2));
-            obj.mover(new Point(0,450));
+            int x = (int) (Math.random()*350);
+            int y = (int) (Math.random()*50);
+            obj.mover(new Point(x,y+450));
             return true;
         }
         return false;
@@ -82,12 +85,17 @@ public class Jogador extends Controle {
 
         pontos.add(pontoEmPixel(toque));
         if( validarSelecao(pontos.get(0), "GAMER") ){
-            if(pontos.size()>1){
-                System.out.println("Vez do jogador");
-                mover();
-                jogadas++;
+            if(pontos.size()==2){
+                if(espacoVazio(pontos.get(1))){
+                    System.out.println("Vez do jogador");
+                    mover();
+                    jogadas++;
+                }
                 pontos.clear();
             }
+
+        }else{
+            pontos.clear();
         }
 
     }

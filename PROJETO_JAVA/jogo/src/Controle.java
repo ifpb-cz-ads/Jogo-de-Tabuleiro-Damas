@@ -23,6 +23,14 @@ public class Controle extends Thread{
         }
     }
 
+    public boolean isDama(Point ponto){
+        Pedra obj = (Pedra) buscarNaTab(ponto);
+        if(obj!=null){
+            return  ( (obj.getPosicao().y == 0 && obj.hash.equals("GAMER")) || (obj.getPosicao().y == 350 && obj.hash.equals("CPU")) );
+        }
+        return false;
+    }
+
     public boolean validarSelecao(Point ponto, String hash){
         Pedra obj = (Pedra) buscarNaTab(ponto);
         if((obj!= null)){

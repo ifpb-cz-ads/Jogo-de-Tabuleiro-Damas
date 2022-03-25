@@ -59,19 +59,27 @@ public class Maquina extends Controle {
         return false;
     }
 
+    public void capturar(){
+        Pedra obj;
+        System.out.println("ponto sorteado: ("+ pontos.get(1).x +" , "+ pontos.get(1).y+" )");
+        obj = (Pedra) buscarNaTab(pontos.get(0));
+        obj.mover(pontos.get(1));
+        obj = (Pedra) buscarNaTab(pontos.get(2));
+        int x = (int) (Math.random()*50);
+        int y = (int) (Math.random()*350);
+        obj.mover(new Point(450+x,y));
+    }
+
     public boolean mover(){
-        Pedra obj = new Peao();
+
         if(movimentoTipo1()){
+            Pedra obj;
             System.out.println("ponto sorteado: ("+ pontos.get(1).x +" , "+ pontos.get(1).y+" )");
             obj = (Pedra) buscarNaTab(pontos.get(0));
             obj.mover(pontos.get(1));
             return true;
         }else if(movimentoTipo2()){
-            System.out.println("ponto sorteado: ("+ pontos.get(1).x +" , "+ pontos.get(1).y+" )");
-            obj = (Pedra) buscarNaTab(pontos.get(0));
-            obj.mover(pontos.get(1));
-            obj = (Pedra) buscarNaTab(pontos.get(2));
-            obj.mover(new Point(450,0));
+            capturar();
             return true;
         }
         return false;
@@ -87,14 +95,14 @@ public class Maquina extends Controle {
 
     public void jogar() {
 
-        pontos.clear();
         boolean fluxo=false;
         final int PIXELS=50;
         //jogo aleatorio da máquina
         while (!fluxo){
+            pontos.clear();
             pontos.add(sortearPixels());
             if(validarSelecao(pontos.get(0), "CPU")){
-                switch ((int) (Math.random()*2+1)){
+                switch ((int) (Math.random()*4+1)){
                     case 1:
                         pontos.add(new Point(pontos.get(0).x-PIXELS, pontos.get(0).y+PIXELS));
                         fluxo = mover();
@@ -103,13 +111,21 @@ public class Maquina extends Controle {
                         pontos.add(new Point(pontos.get(0).x+PIXELS, pontos.get(0).y+PIXELS));
                         fluxo = mover();
                         break;
+                    case 3:
+                        pontos.add(new Point(pontos.get(0).x-PIXELS*2, pontos.get(0).y+PIXELS*2));
+                        fluxo = mover();
+                        break;
+                    case 4:
+                        pontos.add(new Point(pontos.get(0).x+PIXELS*2, pontos.get(0).y+PIXELS*2));
+                        fluxo = mover();
+                        break;
                     default:
                         fluxo = numPecas>0;
                         break;
                 }
             }
-            pontos.clear();
         }
+        pontos.clear();
         jogadas++;
     }
 
