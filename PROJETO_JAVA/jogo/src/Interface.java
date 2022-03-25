@@ -17,7 +17,7 @@ public class Interface extends JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(600, 600);
         setLocationRelativeTo(null);
-        setTitle("Interface gráfica");
+        setTitle("JOGO DE TABULEIRO - DAMAS");
         setResizable(false);
         setVisible(true);
         setLayout(null);

@@ -24,8 +24,11 @@ public class Controle extends Thread{
     }
 
     public boolean validarSelecao(Point ponto, String hash){
-        Pedra obj = (Pedra) buscarNaTab(pontos.get(0));
-        return (obj!= null && (obj.hash.equals(hash) || obj.hash.equals("DAMA"+hash)));
+        Pedra obj = (Pedra) buscarNaTab(ponto);
+        if((obj!= null)){
+            return (obj.hash.equals(hash) || obj.hash.equals("DAMA"+hash));
+        }
+        return false;
     }
 
     public Object buscarNaTab(Point ponto){
@@ -39,13 +42,6 @@ public class Controle extends Thread{
 
     public void atualizarTab(){
         for(Pedra i: tab.getPecas()){
-            if(!i.status){
-                if(i.hash.equals("CPU")||i.hash.equals("DAMACPU")){
-                    i.setPosicao(new Point(400, 0));
-                }else if(i.hash.equals("GAMER")||i.hash.equals("DAMAGAMER")){
-                    i.setPosicao(new Point(0, 400));
-                }
-            }
             i.setLabel();
         }
     }

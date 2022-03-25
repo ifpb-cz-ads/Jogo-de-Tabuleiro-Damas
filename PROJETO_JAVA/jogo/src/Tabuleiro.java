@@ -21,19 +21,14 @@ public class Tabuleiro {
         return pecas;
     }
 
-
     //função para inicializar a matriz do tabuleiro
     public void iniciarTab(){
-        String hash;
         for(int x=0, pexelY=0; x<8; x++, pexelY+=50){
             for(int y=0, pexelX=0; y<8; y++, pexelX+=50){
-                hash = (x<3) ? "CPU" : ( (x>4) ? "GAMER": HASH_LIVRE );
-                if((!hash.equals(HASH_LIVRE))) {
-                    if (x % 2 != y % 2) {
-                        pecas.add(new Peao(new Point(pexelX,pexelY),hash));
-                    }
-                }else{
-                    break;
+                if(x<3 && (x % 2 != y % 2)){
+                    pecas.add(new Peao(new Point(pexelX,pexelY),"CPU"));
+                }if(x>4 && (x % 2 != y % 2)){
+                    pecas.add(new Peao(new Point(pexelX,pexelY),"GAMER"));
                 }
             }
         }
