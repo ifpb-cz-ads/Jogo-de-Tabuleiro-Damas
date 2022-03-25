@@ -5,12 +5,15 @@ public class Peao extends Pedra {
         super(p, img);
     }
 
+    Peao(){
+        super();
+    }
+
     @Override
     public void mover(Point p) {
         if(status){
             System.out.println("Movendo peao...");
             setPosicao(p);
-            setStatus(false);
         }
     }
 }

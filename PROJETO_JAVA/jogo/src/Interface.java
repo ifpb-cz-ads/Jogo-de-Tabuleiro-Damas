@@ -35,6 +35,7 @@ public class Interface extends JFrame{
                     System.out.println("vez da máquina...");
                     controle.run(1);
                     maquina.jogar();
+                    controle.atualizarTab();
                 }
             }
 

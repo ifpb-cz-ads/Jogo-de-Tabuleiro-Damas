@@ -9,11 +9,21 @@ public abstract class Pedra extends JLabel{
     protected int TAM;
     protected boolean status;
 
-    public Pedra(Point posicao, String img) {
+    Pedra(){
+        this.posicao = null;
+        this.hash = null;
+        this.TAM = 0;
+        this.status = true;
+        this.imagem = null;
+        this.labelPedra = null;
+    }
+
+
+    Pedra(Point posicao, String img) {
         this.posicao = posicao;
         this.hash = img;
         this.TAM = 50;
-        this.status = false;
+        this.status = true;
         this.imagem = new ImageIcon(getClass().getResource("/imagens/"+hash+".png"));
         this.labelPedra = new JLabel(this.imagem);
         this.labelPedra.setBounds(posicao.x, posicao.y, this.TAM, this.TAM);

@@ -6,12 +6,15 @@ public class Dama extends Pedra {
         super(p, img);
     }
 
+    Dama(){
+        super();
+    }
+
     @Override
     public void mover(Point p) {
         if (status) {
             System.out.println("Movendo dama...");
             setPosicao(p);
-            setStatus(false);
         }
     }
 }

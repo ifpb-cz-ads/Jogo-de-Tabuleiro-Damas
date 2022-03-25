@@ -7,6 +7,7 @@ public class Controle extends Thread{
     protected int cliques;
     protected boolean vez;
     protected ArrayList<Point> pontos;
+    protected final int PIXELS=50;
 
     Controle(){
         this.vez =true;
@@ -22,9 +23,9 @@ public class Controle extends Thread{
         }
     }
 
-    public boolean selecionarPedra(Point ponto){
-        Object obj = buscarNaTab(ponto);
-        return obj!=null;
+    public boolean validarSelecao(Point ponto, String hash){
+        Pedra obj = (Pedra) buscarNaTab(pontos.get(0));
+        return (obj!= null && (obj.hash.equals(hash) || obj.hash.equals("DAMA"+hash)));
     }
 
     public Object buscarNaTab(Point ponto){
@@ -38,8 +39,14 @@ public class Controle extends Thread{
 
     public void atualizarTab(){
         for(Pedra i: tab.getPecas()){
+            if(!i.status){
+                if(i.hash.equals("CPU")||i.hash.equals("DAMACPU")){
+                    i.setPosicao(new Point(400, 0));
+                }else if(i.hash.equals("GAMER")||i.hash.equals("DAMAGAMER")){
+                    i.setPosicao(new Point(0, 400));
+                }
+            }
             i.setLabel();
-            i.setStatus(false);
         }
     }
 
@@ -63,7 +70,8 @@ public class Controle extends Thread{
     }
 
     public boolean espacoVazio(Point p){
-        return !selecionarPedra(p);
+        Pedra obj = (Pedra) buscarNaTab(p);
+        return obj==null;
     }
 
     public boolean compararPosicoes(Point p1, Point p2){
