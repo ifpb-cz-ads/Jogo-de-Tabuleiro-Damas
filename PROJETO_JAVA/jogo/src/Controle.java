@@ -2,33 +2,15 @@ import java.awt.*;
 import java.util.ArrayList;
 
 //classe controle do jogo
-public class Controle extends Thread{
-    Tabuleiro tab;
+public class Controle {
+    protected Tabuleiro tab;
     protected int cliques;
-    protected boolean vez;
-    protected ArrayList<Point> pontos;
-    protected final int PIXELS=50;
+    protected boolean movimento;
 
     Controle(){
-        this.vez =true;
+        this.tab = new Tabuleiro();
+        this.movimento = false;
         this.cliques = 0;
-        this.pontos = new ArrayList<>(2);
-    }
-
-    public void run(long x){
-        try {
-            sleep(x * 1000);
-        }catch (Exception e){
-            System.out.println();
-        }
-    }
-
-    public boolean isDama(Point ponto){
-        Pedra obj = (Pedra) buscarNaTab(ponto);
-        if(obj!=null){
-            return  ( (obj.getPosicao().y == 0 && obj.hash.equals("GAMER")) || (obj.getPosicao().y == 350 && obj.hash.equals("CPU")) );
-        }
-        return false;
     }
 
     public boolean validarSelecao(Point ponto, String hash){

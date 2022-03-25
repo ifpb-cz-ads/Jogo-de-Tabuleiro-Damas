@@ -3,7 +3,7 @@ import java.awt.*;
 
 public abstract class Pedra extends JLabel{
     protected Point posicao;
-    protected final String hash;
+    protected String hash;
     protected ImageIcon imagem;
     protected JLabel labelPedra;
     protected int TAM;
