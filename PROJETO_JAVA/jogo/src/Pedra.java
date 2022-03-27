@@ -1,56 +1,58 @@
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class Pedra extends JLabel{
-    protected Point posicao;
+public class Pedra extends JLabel{
     protected String hash;
-    protected ImageIcon imagem;
     protected JLabel labelPedra;
     protected int TAM;
-    protected boolean status;
 
     Pedra(){
-        this.posicao = null;
         this.hash = null;
         this.TAM = 0;
-        this.status = true;
-        this.imagem = null;
         this.labelPedra = null;
     }
 
-
     Pedra(Point posicao, String img) {
-        this.posicao = posicao;
         this.hash = img;
         this.TAM = 50;
-        this.status = true;
-        this.imagem = new ImageIcon(getClass().getResource("/imagens/"+hash+".png"));
-        this.labelPedra = new JLabel(this.imagem);
+        this.labelPedra = new JLabel(new ImageIcon(getClass().getResource("/imagens/"+hash+".png")));
         this.labelPedra.setBounds(posicao.x, posicao.y, this.TAM, this.TAM);
     }
 
+    public String getHash(){
+        return this.hash;
+    }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public boolean isDama(){
+        return (hash.equals("DAMAGAMER") || hash.equals("DAMACPU"));
+    }
+
+    public boolean tornarDama(){
+      return (this.labelPedra.getLocation().y == 100 && hash.equals("GAMER")) || (this.labelPedra.getLocation().y == 450 && hash.equals("CPU"));
+
+    }
+
+    public void pedraMove(Point ponto){
+        setPosicao(ponto);
     }
 
     public JLabel getLabel() {
         return labelPedra;
     }
 
-    public void setLabel() {
-        this.labelPedra.setBounds(posicao.x, posicao.y, this.TAM, this.TAM);
+    public void setImage() {
+        hash = "DAMA"+this.hash;
+        this.labelPedra.setIcon(new ImageIcon(getClass().getResource("/imagens/"+hash+".png")));
     }
 
-    public abstract void mover(Point p);
-
     public Point getPosicao() {
-        return posicao;
+        return this.labelPedra.getLocation();
     }
 
     public void setPosicao(Point posicao) {
-        this.posicao.x = posicao.x;
-        this.posicao.y = posicao.y;
+        this.labelPedra.setLocation(posicao);
     }
+
+
 
 }

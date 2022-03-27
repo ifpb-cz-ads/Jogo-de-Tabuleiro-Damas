@@ -2,113 +2,157 @@ import java.awt.*;
 import java.util.ArrayList;
 
 //classe modelo para criar os objetos jogador e máquina (os elementos da interação do jogo)
-public class Jogador{
+public abstract class Jogador extends Thread{
 
-    private final String nome;
-    private final int idade;
+    protected final String nome;
     protected int jogadas;
     protected int capturas;
     protected Controle controle;
     protected ArrayList<Point> pontos;
     protected final int PIXELS;
+    protected final String tipoDePeca;
 
-    public Jogador(String nome, int idade, Controle controle) {
+    public Jogador(String nome, String peca, Controle controle) {
+
         this.nome = nome;
-        this.idade = idade;
         this.capturas = 0;
         this.controle = controle;
         this.pontos = new ArrayList<>(2);
         this.PIXELS = 50;
+        this.tipoDePeca = peca;
     }
 
-    public boolean movimentoTipo1(){
+    public abstract boolean validarMovimento1();
+    public abstract boolean capturar();
+    public abstract void jogar();
 
-        Point pontoInicial = pontos.get(0);
-        Point pontoDestino = pontos.get(1);
-        Point comparativo1 = new Point((pontoInicial.x+PIXELS), (pontoInicial.y-PIXELS));
-        Point comparativo2 = new Point((pontoInicial.x-PIXELS), (pontoInicial.y-PIXELS));
-
-        boolean caso0 = (pontoDestino.x>=0 && pontoDestino.x<=350) && ( pontoDestino.y>=0 && pontoDestino.y<=350 ) && controle.espacoVazio(pontoDestino);
-        if(!caso0){
-            return false;
-        }else{
-            boolean caso1 = controle.compararPosicoes(pontoDestino, comparativo1);
-            boolean caso2 = controle.compararPosicoes(pontoDestino, comparativo2);
-            return ( caso1 || caso2 );
-        }
-    }
-
-    public boolean movimentoTipo2(boolean sinal){
-
-        final int OPERADOR = sinal ? PIXELS: PIXELS*(-1);
-        Point pontoInicial = pontos.get(0);
-        Point pontoDestino = pontos.get(1);
-        Point comparativo1 = new Point((pontoInicial.x+OPERADOR*2), (pontoInicial.y+OPERADOR*2));
-        Point comparativo2 = new Point((pontoInicial.x-OPERADOR*2), (pontoInicial.y+OPERADOR*2));
-        Point comparativo3 = new Point((pontoInicial.x+OPERADOR), (pontoInicial.y+OPERADOR));
-        Point comparativo4 = new Point((pontoInicial.x-OPERADOR), (pontoInicial.y+OPERADOR));
-
-        boolean caso0 = pontoDestino.x>=0 && pontoDestino.x<=350 && pontoDestino.y>=0 && pontoDestino.y<=350 && controle.espacoVazio(pontoDestino);
-
-        if(caso0){
-            boolean caso1 = controle.compararPosicoes(pontoDestino, comparativo1);
-            boolean caso2 = controle.compararPosicoes(pontoDestino, comparativo2);
-
-            if((caso1 || caso2)){
-                boolean caso3 = controle.validarSelecao(comparativo3, "CPU");
-                boolean caso4 = controle.validarSelecao(comparativo4, "CPU");
-                if(caso3){
-                    pontos.add(comparativo3);
-                    return true;
-                }else if(caso4){
-                    pontos.add(comparativo4);
-                    return  true;
-                }
-            }
+    public boolean pecaMinha(Point ponto){
+        Pedra obj = (Pedra) controle.buscarNaTab(ponto);
+        if((obj!= null)){
+            return (obj.getHash().equals(tipoDePeca) || obj.getHash().equals("DAMA"+tipoDePeca));
         }
         return false;
     }
 
-    public void capturar(){
-        Pedra obj = (Pedra) controle.buscarNaTab(pontos.get(2));
-        int x = (int) (Math.random()*300);
-        int y = (int) (Math.random()*100)+400;
-        obj.mover(new Point(x,y));
-        this.capturas++;
+    public boolean movimentoDama(){
+
+        Point pontoInicial = pontos.get(0);
+        Point pontoDestino = pontos.get(1);
+
+        boolean caso0 =  (pontoDestino.x<controle.tab.TABPOSX || pontoDestino.x>=controle.tab.TABPOSX + controle.tab.TAM
+                || pontoDestino.y<controle.tab.TABPOSY || pontoDestino.y>=controle.tab.TABPOSY+controle.tab.TAM);
+
+        boolean caso1 = Math.abs(pontoInicial.x-pontoDestino.x)==Math.abs(pontoInicial.y-pontoDestino.y);
+        boolean caso2 = controle.espacoVazio(pontoDestino);
+
+        return caso0 && caso1 && caso2;
+        /*
+        int passoPixelY = (pontoDestino.y-pontoInicial.y) > 0 ? 50: -50;
+        int passoPixelX = (pontoDestino.x-pontoInicial.x) > 0 ? 50: -50;
+
+        ArrayList<Boolean> avaliacao = new ArrayList<>(5);
+        pontos.clear();
+        pontos.add(new Point( pontoInicial.x+ passoPixelX,pontoInicial.y+passoPixelY));
+
+        while(!controle.compararPosicoes(pontoDestino, pontos.get(pontos.size()-1))){
+
+            if(pecaMinha(pontos.get(pontos.size()-1))){
+                return false;
+            }else if(controle.espacoVazio(pontos.get(pontos.size()-1))){
+                avaliacao.add(false);
+            }else{
+                avaliacao.add(true);
+            }
+            pontos.get(pontos.size()-1).x += passoPixelX;
+            pontos.get(pontos.size()-1).y += passoPixelY;
+        }
+
+        for(int i=0; i<avaliacao.size()-1; i++){
+           if(avaliacao.get(i) && avaliacao.get(i+1)){
+               return caso0 && caso1 && caso2;
+           }
+        }
+
+        return false;
+
+         */
     }
 
     public boolean mover(){
-        Pedra obj;
-        if(movimentoTipo1()){
-            obj = (Pedra) controle.buscarNaTab(pontos.get(0));
-            obj.mover(pontos.get(1));
-            return true;
-        }else if(movimentoTipo2(false)||movimentoTipo2(true)){
-            if(!controle.espacoVazio(pontos.get(2))){
-                System.out.println("ponto sorteado: ("+ pontos.get(1).x +" , "+ pontos.get(1).y+" )");
-                obj = (Pedra) controle.buscarNaTab(pontos.get(0));
-                obj.mover(pontos.get(1));
-                capturar();
-                return true;
 
+        Pedra obj = (Pedra) controle.buscarNaTab(pontos.get(0));
+
+        if(obj!=null){
+            if(obj.isDama() && movimentoDama()){
+                obj.pedraMove(pontos.get(1));
+                return true;
+            }else{
+                if(validarMovimento1()){
+                    obj.pedraMove(pontos.get(1));
+                    return true;
+                }
+                if(validarMovimento2()){
+                    if(!pecaMinha(pontos.get(2))){
+                        obj.pedraMove(pontos.get(1));
+                        return capturar();
+                    }
+                }
             }
+
         }
         return false;
     }
 
-    public void jogar(Point toque) {
+    public boolean validarMovimento2(){
 
-        pontos.add(controle.pontoEmPixel(toque));
-        if(pontos.size()==2){
-            if( controle.validarSelecao(pontos.get(0), "GAMER") && controle.espacoVazio(pontos.get(1))){
-                if(mover()){
-                    System.out.println("Vez do jogador");
-                    jogadas++;
-                }
-            }
-            pontos.clear();
+        Point pontoInicial = pontos.get(0);
+        Point pontoDestino = pontos.get(1);
+
+        Point comparativo1 = new Point((pontoInicial.x+PIXELS*2), (pontoInicial.y-PIXELS*2));
+        Point comparativo2 = new Point((pontoInicial.x-PIXELS*2), (pontoInicial.y-PIXELS*2));
+        Point meio1 = new Point((pontoInicial.x+PIXELS), (pontoInicial.y-PIXELS));
+        Point meio2 = new Point((pontoInicial.x-PIXELS), (pontoInicial.y-PIXELS));
+
+        Point comparativo3 = new Point((pontoInicial.x+PIXELS*2), (pontoInicial.y+PIXELS*2));
+        Point comparativo4 = new Point((pontoInicial.x-PIXELS*2), (pontoInicial.y+PIXELS*2));
+        Point meio3 = new Point((pontoInicial.x+PIXELS), (pontoInicial.y+PIXELS));
+        Point meio4 = new Point((pontoInicial.x-PIXELS), (pontoInicial.y+PIXELS));
+
+        boolean caso0 =(pontoDestino.x<controle.tab.TABPOSX || pontoDestino.x>=controle.tab.TABPOSX+ controle.tab.TAM)
+                || ( pontoDestino.y<controle.tab.TABPOSY || pontoDestino.y>=controle.tab.TABPOSY+controle.tab.TAM );
+
+        if(caso0 || (!controle.espacoVazio(pontoDestino))){
+            return false;
         }
 
+        boolean caso1 = controle.compararPosicoes(pontoDestino, comparativo1);
+        boolean caso2 = controle.compararPosicoes(pontoDestino, comparativo2);
+        boolean caso3 = controle.compararPosicoes(pontoDestino, comparativo3);
+        boolean caso4 = controle.compararPosicoes(pontoDestino, comparativo4);
+
+        if(caso1) {
+            if(!controle.espacoVazio(meio1)){
+                pontos.add(new Point(meio1));
+                return true;
+            }
+        }else if(caso2){
+            if(!controle.espacoVazio(meio2)){
+                pontos.add(new Point(meio2));
+                return true;
+            }
+        }else if(caso3){
+            if(!controle.espacoVazio(meio3)){
+                pontos.add(new Point(meio3));
+                return true;
+            }
+        }else if(caso4){
+            if(!controle.espacoVazio(meio4)){
+                pontos.add(new Point(meio4));
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

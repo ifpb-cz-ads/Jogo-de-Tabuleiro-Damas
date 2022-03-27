@@ -1,24 +1,16 @@
 import java.awt.*;
-import java.util.ArrayList;
 
 //classe controle do jogo
 public class Controle {
     protected Tabuleiro tab;
     protected int cliques;
+    protected Point botao;
     protected boolean movimento;
 
     Controle(){
         this.tab = new Tabuleiro();
         this.movimento = false;
         this.cliques = 0;
-    }
-
-    public boolean validarSelecao(Point ponto, String hash){
-        Pedra obj = (Pedra) buscarNaTab(ponto);
-        if((obj!= null)){
-            return (obj.hash.equals(hash) || obj.hash.equals("DAMA"+hash));
-        }
-        return false;
     }
 
     public Object buscarNaTab(Point ponto){
@@ -31,14 +23,18 @@ public class Controle {
     }
 
     public void atualizarTab(){
+
         for(Pedra i: tab.getPecas()){
-            i.setLabel();
+            if(i.tornarDama()){
+                i.setImage();
+            }
         }
+
     }
 
     public Point pontoEmPixel(Point ponto){
 
-        int limiteX=0, limiteY=0;
+        int limiteX= tab.TABPOSX, limiteY=tab.TABPOSY;
         Point p = new Point();
         for(int i=0; i<8; i++){
             for(int j=0; j<8; j++){
@@ -49,7 +45,7 @@ public class Controle {
                 }
                 limiteX += 50;
             }
-            limiteX = 0;
+            limiteX = tab.TABPOSX;
             limiteY += 50;
         }
         return p;
