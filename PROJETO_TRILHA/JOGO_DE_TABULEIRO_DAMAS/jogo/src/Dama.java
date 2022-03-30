@@ -6,9 +6,5 @@ public class Dama extends Pedra {
         super(p, img);
     }
 
-    @Override
-    public void pedraMove(Point ponto){
-        setPosicao(ponto);
-    }
 
 }

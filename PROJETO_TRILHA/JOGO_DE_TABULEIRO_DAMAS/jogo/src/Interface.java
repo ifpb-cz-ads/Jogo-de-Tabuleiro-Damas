@@ -14,7 +14,6 @@ public class Interface extends JFrame{
         setResizable(false);
         setVisible(true);
         setLayout(null);
-
     }
 
 }

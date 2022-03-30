@@ -6,12 +6,6 @@ public class Pedra extends JLabel{
     protected JLabel labelPedra;
     protected int TAM;
 
-    Pedra(){
-        this.hash = null;
-        this.TAM = 0;
-        this.labelPedra = null;
-    }
-
     Pedra(Point posicao, String img) {
         this.hash = img;
         this.TAM = 50;
@@ -28,7 +22,7 @@ public class Pedra extends JLabel{
     }
 
     public boolean tornarDama(){
-      return (this.labelPedra.getLocation().y == 100 && hash.equals("GAMER")) || (this.labelPedra.getLocation().y == 450 && hash.equals("CPU"));
+        return (this.labelPedra.getLocation().y == 100 && hash.equals("GAMER")) || (this.labelPedra.getLocation().y == 450 && hash.equals("CPU"));
 
     }
 
